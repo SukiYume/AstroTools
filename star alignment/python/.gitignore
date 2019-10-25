@@ -1,0 +1,13 @@
+*.TIF
+*.JPG
+*.tif
+*.jpg
+*.jpeg
+*.tiff
+**.idea
+*.prf
+**.pyc
+dist
+**.spec
+
+tif_image_test.py

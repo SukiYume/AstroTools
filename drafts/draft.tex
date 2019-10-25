@@ -1,0 +1,184 @@
+\documentclass[11pt,letterpaper]{article}
+
+\newenvironment{proof}{\noindent{\bf Proof:}}{\qed\bigskip}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma} 
+\newtheorem{claim}{Claim}
+\newtheorem{fact}{Fact}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+\newtheorem{example}{Example}
+\newcommand{\qed}{\rule{7pt}{7pt}}
+
+\newcommand{\assignment}[5]{
+\thispagestyle{plain} 
+\newpage
+\setcounter{page}{1}
+\noindent
+\begin{center}
+\framebox{ \vbox{ \hbox to 6.28in
+{\bf \textsf{ #1 \hfill #2 }}
+\vspace{4mm}
+\hbox to 6.28in
+{\hspace{2.5in}\Large\mbox{\bf \textsf{Problem Set #3}}}
+\vspace{4mm}
+\hbox to 6.28in
+{{\it Handed Out: #4 \hfill Due: #5}}
+}}
+\end{center}
+}
+
+\newcommand{\normaldoc}[5]{
+\thispagestyle{plain} 
+\newpage
+\setcounter{page}{1}
+\noindent
+\begin{center}
+\framebox{ \vbox{ \hbox to 6.28in
+{\bf \textsf{ #1 \hfill #2 }}
+\vspace{4mm}
+\hbox to 6.28in
+{\hfill\Large\mbox{\bf \textsf{#3}}\hfill}
+\vspace{4mm}
+\hbox to 6.28in
+{#4 \hfill {Completed Date:  \textit{#5} }}
+}}
+\end{center}
+\markright{#4}
+}
+
+\newcommand{\project}[6]{
+\thispagestyle{plain} 
+\newpage
+\setcounter{page}{1}
+\noindent
+\begin{center}
+\framebox{ \vbox{ \hbox to 6.28in
+{\bf \textsf{ #1 \hfill #2 }}
+\vspace{4mm}
+\hbox to 6.28in
+{\hfill\Large\mbox{\bf \textsf{Project #3: #6}}\hfill}
+\vspace{4mm}
+\hbox to 6.28in
+{#4 \hfill {\textit{#5} }}
+}}
+\end{center}
+\markright{#4}
+}
+
+\newcommand{\solution}[5]{
+\thispagestyle{plain} 
+\newpage
+\setcounter{page}{1}
+\noindent
+\begin{center}
+\framebox{ \vbox{ \hbox to 6.28in
+{\bf \textsf{ #1 \hfill #2 }}
+\vspace{4mm}
+\hbox to 6.28in
+{\hspace{2.5in}\Large\mbox{\bf \textsf{Problem Set #3}}}
+\vspace{4mm}
+\hbox to 6.28in
+{#4 \hfill {Completed Date: \textit{#5} }}
+}}
+\end{center}
+\markright{#4}
+}
+
+\newenvironment{algorithm}
+{\begin{center}
+\begin{tabular}{|l|}
+\hline
+\begin{minipage}{1in}
+\begin{tabbing}
+\quad\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\=\kill}
+{\end{tabbing}
+\end{minipage} \\
+\hline
+\end{tabular}
+\end{center}}
+
+\def\Comment#1{\textsf{\textsl{$\langle\!\langle$#1\/$\rangle\!\rangle$}}}
+
+
+
+\usepackage{graphicx,amssymb,amsmath,enumerate}
+\usepackage{subfigure}
+\usepackage{hyperref}
+\usepackage{courier}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\lstset{language=C++,
+	frame=lines,
+   basicstyle=\ttfamily\fontsize{8}{12}\selectfont,
+   keywordstyle=\color{blue},
+   commentstyle=\color{red},
+   stringstyle=\color{dkgreen},
+   numbers=left,
+   numberstyle=\tiny\color{gray},
+   stepnumber=1,
+   numbersep=10pt,
+   backgroundcolor=\color{white},
+   tabsize=2,
+   showspaces=false,
+   showstringspaces=false,
+   lineskip=-3.5pt }
+\oddsidemargin 0in
+\evensidemargin 0in
+\textwidth 6.5in
+\topmargin -0.5in
+\textheight 9.0in
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+
+\title{Notes on Quadrotor}
+\maketitle
+
+\pagestyle{myheadings}  % Leave this command alone
+
+\section{Mathematic}
+Assume a star with Equatorial coordinate $(\delta, \alpha)$, the latitude is $\phi_0$, the camera is pointing
+at $(a, A)$ in Horizontal coordinate. 
+
+The $x-y-z$ coordinate in Equatorial frame is
+\begin{equation}
+    \boldsymbol{p}_e = (\cos\delta \cos(\alpha + \omega t),\; \cos\delta \sin(\alpha + \omega t),\; \sin\delta)
+\end{equation}
+
+and in Horizontal frame is
+\begin{equation}
+    \boldsymbol{p}_h = \boldsymbol{R}_x\left(\phi_0-\frac{\pi}{2}\right)\boldsymbol{p}_e
+\end{equation}
+
+and in camera frame is
+\begin{equation}
+    \boldsymbol{p}_c = \boldsymbol{R}_x\left(\frac{\pi}{2}-a\right)\boldsymbol{R}_z(A)\boldsymbol{p}_h
+\end{equation}
+
+and every element can be expressed as
+\begin{equation}
+\begin{split}
+    x =& \cos A \cos \delta  \cos (\alpha +\omega t)-\sin A (\cos \delta  \sin
+        \phi_0 \sin (\alpha +\omega t)+\sin \delta  \cos \phi_0) \\
+    y=&\sin \delta  \cos(A \cos \phi_0 \sin a - \cos a \sin \phi_0) + 
+ \cos \delta (\cos(\alpha + \omega t) \sin a \sin A +  \\
+ &\cos a \cos \phi_0 + 
+ \cos A \sin a \sin \phi_0) \sin(\alpha + \omega t))\\
+    z =&\cos \delta 
+       \sin (\alpha +\omega t) (\cos a \cos A \sin \phi_0-\sin a \cos
+       \phi_0)+\cos a \sin A \cos \delta  \cos (\alpha +\omega t)+ \\
+       &\cos a \cos A \sin \delta  \cos \phi_0+\sin a \sin \delta  \sin \phi_0
+\end{split}
+\end{equation}
+
+\end{document}

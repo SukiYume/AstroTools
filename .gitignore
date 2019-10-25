@@ -1,0 +1,13 @@
+**.swp
+**.DS_Store
+**.mat
+drafts/*.out
+drafts/*.aux
+drafts/*.log
+drafts/*.synctex.gz
+star alignment/*.dat
+star alignment/data
+star alignment/prepare_config.m
+non local means/**/*.tif
+non local means/**/*.jpg
+**/build
